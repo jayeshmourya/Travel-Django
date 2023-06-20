@@ -26,6 +26,7 @@ router=DefaultRouter()
 router.register('customuser',CustomUserView,basename='customuser')
 router.register('destinations',DestinationView,basename='destination')
 router.register('packages',PackageView,basename='packages')
+router.register('pictures',PicturesView,basename='pictures')
 # router.register(r'user-payments', UserPaymentViewSet)
 
 

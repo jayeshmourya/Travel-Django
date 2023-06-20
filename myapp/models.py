@@ -1,4 +1,7 @@
 from django.db import models
+from django.db import models
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 # Create your models here.
 
@@ -7,8 +10,20 @@ from django.contrib.auth.models import AbstractUser
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
     phone_number = models.CharField(max_length=20, unique=True)
+    image=models.FileField(upload_to='users',blank=True,null=True)
 
 
+
+class Notification(models.Model):
+    message = models.CharField(max_length=255)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)('notifications', {
+            'type': 'send_notification',
+            'notification': self.message
+        })
     
 
 class Destination(models.Model):
@@ -18,6 +33,12 @@ class Destination(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Picture(models.Model):
+    destination=models.ForeignKey(Destination,on_delete=models.CASCADE)
+    pic=models.FileField(upload_to='',blank=True,null=True)
+
+    
     
 
 class Package(models.Model):
@@ -46,5 +67,6 @@ class Order(models.Model):
 
     def __str__(self):
         return self.order_product
+    
 
 

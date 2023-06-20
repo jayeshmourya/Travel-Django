@@ -30,7 +30,9 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+INSTALLED_APPS = [ 
+    'daphne',
+    'redis',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -71,7 +73,9 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'mypro.wsgi.application'
+ASGI_APPLICATION = "mypro.asgi.application"
 
 
 # Database
@@ -127,6 +131,15 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL='myapp.CustomUser'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
 
 
 CORS_ALLOWED_ORIGINS = [

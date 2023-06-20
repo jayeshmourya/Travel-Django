@@ -25,5 +25,7 @@ admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Destination)
 admin.site.register(Package)
 admin.site.register(Order)
+admin.site.register(Notification)
+admin.site.register(Picture)
 
     
